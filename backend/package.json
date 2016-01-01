@@ -1,0 +1,16 @@
+{
+  "name": "backend-toptal-andrzej-swaton",
+  "version": "1.0.0",
+  "description": "backend for toptal assignment",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "toptal",
+    "express"
+  ],
+  "author": "Andrzej Swaton",
+  "license": "ISC"
+}
