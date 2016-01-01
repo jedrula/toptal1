@@ -1,7 +1,7 @@
 {
-  "name": "project-andrzej-swaton",
+  "name": "project-andrzej-swaton-cli",
   "version": "0.0.0",
-  "description": "Small description for project-andrzej-swaton goes here",
+  "description": "Small description for project-andrzej-swaton-cli goes here",
   "private": true,
   "directories": {
     "doc": "doc",

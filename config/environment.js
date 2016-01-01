@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'project-andrzej-swaton',
+    modulePrefix: 'project-andrzej-swaton-cli',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
