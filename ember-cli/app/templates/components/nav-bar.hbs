@@ -8,14 +8,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Timetracker</a>
+
+            <a class="navbar-brand" href="/#">Timetracker</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <!-- TODO replace hardcoded 1 -->
-                <li>{{#link-to 'user/1/entries'}}Your entries{{/link-to}}</li>
+                <li>{{#link-to 'user.entries' 1}}Your entries{{/link-to}}</li>
+                <!-- TODO if not logged in -->
+                <li>{{#link-to 'register'}}Register{{/link-to}}</li>
+                <!-- TODO END if not logged in -->
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

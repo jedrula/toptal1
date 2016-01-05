@@ -1,0 +1,13 @@
+import Ember from 'ember';
+
+export default Ember.Component.extend({
+  identification: '',
+  password: '',
+  actions: {
+    register() {
+      var properties = this.getProperties(['identification','password']);
+      //console.log('register action ',properties);
+      this.attrs.onSave(properties);
+    }
+  }
+});
