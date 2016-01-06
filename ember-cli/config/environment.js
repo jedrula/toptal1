@@ -44,5 +44,14 @@ module.exports = function(environment) {
     ENV.APP.API_SERVER_URL = 'http://toptalbackend-57350.onmodulus.net';//TODO
   }
 
+  ENV['ember-simple-auth'] = {
+    authorizer: 'authorizer:token'
+  };
+
+  ENV['ember-simple-auth-token'] = {
+    identificationField: 'identification',
+    serverTokenEndpoint: ENV.APP.API_SERVER_URL + '/api/token-auth/',
+  }
+
   return ENV;
 };

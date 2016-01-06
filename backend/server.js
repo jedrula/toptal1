@@ -13,13 +13,14 @@ var database = require('./utils/database');
 var uristring = isDeployedToProduction ? 'mongodb://admin:toptal@apollo.modulusmongo.net:27017/anoryT2e' : 'mongodb://localhost/test';
 database.connect(uristring);
 
-var userRoute = require('./routes/User');
-var routes = [userRoute];   //TODO iterate through all files in routes automatically and add them to the array
+var userRoute = require('./routes/user');
+var authRoute = require('./routes/auth');
+var routes = [userRoute, authRoute];   //TODO iterate through all files in routes automatically and add them to the array
 
 //cors
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Origin", "*"); //TODO maybe we should be more restrictive
+  res.header("Access-Control-Allow-Headers", "Origin, Authorization, X-Requested-With, Content-Type, Accept");
   next();
 });
 //end cors

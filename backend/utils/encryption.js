@@ -19,3 +19,14 @@ exports.comparePassword = function (password, userPassword, callback) {
     return callback(null, isPasswordMatch);
   });
 };
+
+exports.validPassword = (password, userPassword, cb) => {
+  console.log('compare in encryption.js',password, userPassword, this);
+
+  exports.comparePassword(password, userPassword, (err, data) => {
+    if(data === false) {
+      err = 'password mismatch';
+    }
+    cb(err, data);
+  });
+};
