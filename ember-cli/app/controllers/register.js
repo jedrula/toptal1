@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  session: Ember.inject.service(),
   actions: {
     saveModel(data) {
       console.log('data in controller saveModel',data);
@@ -14,14 +15,12 @@ export default Ember.Controller.extend({
       //TODO handle error!
       //TODO login and redirect somewhere
       return user.save().then(function() {
-        /*
-        this.get('session').authenticate('app:authenticators:custom', {
-          identification: identification,
-          password: password
+        debugger;
+        this.get('session').authenticate('authenticator:jwt', {
+          password: password,
+          identification: identification
         });
-        */
-      });
-
+      }.bind(this));
     }
   }
 });
