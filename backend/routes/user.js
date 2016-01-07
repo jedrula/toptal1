@@ -47,6 +47,33 @@ module.exports = function (app) {
     });
   });
 
+  //TODO manage rights to this resource
+  myServerRouter.get('/:id', (req, res) => {
+    console.log('geting a user');
+    User.findById(req.params.id, (err, user) => {
+      var status = 200; //asssume it will be OK
+      var json = {};
+      if(err) {
+        status = 500;
+        json = err;
+      }
+      else {
+        if(user === null) {
+          status = 410;
+        }
+        else{
+          json = {
+            user: {
+              _id: user._id,
+              identification: user.identification
+            }
+          }
+        }
+      }
+      res.status(status).json(json);
+    });
+  });
+
 
   //TODO allow only for admin and userManager
   myServerRouter.delete('/:id', (req, res) => {

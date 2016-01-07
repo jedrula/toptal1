@@ -4,6 +4,11 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // for parsing application/json
+
+var jwt = require('express-jwt');
+var API_SECRET = require('./utils/token').getApiSecret();
+app.use(jwt({ secret: API_SECRET}).unless({path: ['/api/token-auth/']}));  //TODO DRY
+
 //for modulus the host is: http://toptalbackend-57350.onmodulus.net/
 var ipaddress = "0.0.0.0";  //TODO assign backend if in production - something like process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
 var isDeployedToProduction = !!process.env.PORT;  //TODO make more sophisticated
@@ -14,8 +19,9 @@ var uristring = isDeployedToProduction ? 'mongodb://admin:toptal@apollo.modulusm
 database.connect(uristring);
 
 var userRoute = require('./routes/user');
-var authRoute = require('./routes/auth');
-var routes = [userRoute, authRoute];   //TODO iterate through all files in routes automatically and add them to the array
+var tokenAuthRoute = require('./routes/token-auth');
+var tokenRefreshRoute = require('./routes/token-refresh');
+var routes = [userRoute, tokenAuthRoute, tokenRefreshRoute];   //TODO iterate through all files in routes automatically and add them to the array
 
 //cors
 app.use(function(req, res, next) {

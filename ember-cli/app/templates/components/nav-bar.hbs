@@ -15,11 +15,15 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <!-- TODO replace hardcoded 1 -->
-                <li>{{#link-to 'user.entries' 1}}Your entries{{/link-to}}</li>
+                <!-- TODO check if we are not making an extra request for user - we should already have him thanks to session services -->
+
 
                 {{#if session.isAuthenticated}}
-                    <a {{action 'invalidateSession'}}>Logout</a>
+                  <li>{{#link-to 'user.entries' sessionAccount.account.id}}Your entries{{/link-to}}</li>
+                  <li><a {{action 'logout'}} href="#">Logout</a></li>
+                  {{#if sessionAccount.account}}
+                    <p class="navbar-text pull-right">Signed in as {{sessionAccount.account.identification}}</p>
+                  {{/if}}
                 {{else}}
                     <li>{{#link-to 'register'}}Register{{/link-to}}</li>  <!-- TODO maybe register should be in the login route as a link ? Its a common practice -->
                     <li>{{#link-to 'login'}}Login{{/link-to}}</li>

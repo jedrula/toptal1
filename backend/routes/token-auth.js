@@ -3,12 +3,7 @@ var myServerRouter = express.Router();
 var User = require('../models/User');
 var encryption = require('../utils/encryption');
 var async = require('async');
-var jwt = require('jsonwebtoken');
-var API_SECRET = process.env.API_SECRET || 'magic_secret_key';  //TODO add info to Readme that we should pass API_SECRET as env var
-
-if(!API_SECRET) {
-  console.warn('missing a secret for jwt');
-}
+var tokenUtils = require('../utils/token');
 
 //TODO make sure that this uses SSL
 module.exports = function (app) {
@@ -46,15 +41,11 @@ module.exports = function (app) {
       }
       else {
         //TODO send roles like admin or userAdmin
-        var token = jwt.sign({
-          identification: user.identification,
-          scopes: user.scopes
-        }, API_SECRET, {
-          expiresIn: 5 * 60
-        });
+        var token = tokenUtils.sign(user);
         res.status(200).json({
-          token: token
-        })
+          token: token,
+          user_id: user._id
+        });
       }
     });
   });
