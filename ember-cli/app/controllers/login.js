@@ -7,13 +7,9 @@ export default Ember.Controller.extend({
       //var identification = credentials.identification;
       //var password = credentials.password;
 
-      this.get('session').authenticate('authenticator:jwt', credentials).then(() => { //provided by jwt.js in ember-cli-simple-auth-token
-        //TODO createRecord user ?
-        this.get('session').get('user');
+      return this.get('session').authenticate('authenticator:jwt', credentials).then(() => { //provided by jwt.js in ember-cli-simple-auth-token
         //TODO transitionToRoute
       });
-
-
     }
   }
 });

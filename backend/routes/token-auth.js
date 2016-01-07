@@ -37,7 +37,9 @@ module.exports = function (app) {
       console.log('final data', user);
       if(err) {
         console.warn('authentication error', err);
-        res.status(401).end();
+        res.status(401).json({
+          err: err
+        });
       }
       else {
         //TODO send roles like admin or userAdmin

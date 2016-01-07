@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
       user.set('volatilePassword', password);
       //TODO handle error!
       //TODO login and redirect somewhere
-      user.save().then(function() {
+      return user.save().then(function() {
         /*
         this.get('session').authenticate('app:authenticators:custom', {
           identification: identification,

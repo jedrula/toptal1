@@ -5,7 +5,10 @@ exports.cryptPassword = function (password, callback) {
     if (err)
       return callback(err);
 
-    bcrypt.hash(password, salt, function (err, hash) {
+    //we need to provide a (can be noop) progress cb for bcrypt-nodejs. In plain bcrypt hash func can take only 3 args: http://stackoverflow.com/questions/21022328/no-callback-error-shown-when-using-bcrypt-node
+    var progressCb = () => {};
+    
+    bcrypt.hash(password, salt, progressCb, function (err, hash) {
       return callback(err, hash);
     });
 
@@ -13,7 +16,8 @@ exports.cryptPassword = function (password, callback) {
 };
 
 exports.comparePassword = function (password, userPassword, callback) {
-  bcrypt.compare(password, userPassword, function (err, isPasswordMatch) {
+
+  bcrypt.compare(password, userPassword,  function (err, isPasswordMatch) {
     if (err)
       return callback(err);
     return callback(null, isPasswordMatch);

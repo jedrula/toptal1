@@ -4,3 +4,13 @@
   {{input value=password type="password" placeholder="Password" class="form-control"}}
   <button type="submit" class="btn btn-primary">Signup</button>
 </form>
+{{#if errors}}
+  <div class="alert alert-danger">
+    <p>
+      <strong>Registration failed:</strong> 
+   	  {{#each errors as |error|}}
+   	  	<code>{{error.message}}</code>
+	  {{/each}}
+    </p>
+  </div>
+{{/if}}

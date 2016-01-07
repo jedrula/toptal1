@@ -12,7 +12,6 @@ userSchema.methods.validPassword = (password, cb) => {
     encryption.validPassword (password,this.password, cb);
 };
  */
-
 var userModel = mongoose.model('User',userSchema);
 
 module.exports = userModel;

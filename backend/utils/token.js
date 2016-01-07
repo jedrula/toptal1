@@ -1,4 +1,5 @@
 var jwt = require('jsonwebtoken');
+var expressJwt = require('express-jwt');
 var API_SECRET = process.env.API_SECRET || 'magic_secret_key';  //TODO add info to Readme that we should pass API_SECRET as env var
 if(!API_SECRET) {
   console.warn('missing a secret for jwt');
@@ -20,5 +21,8 @@ module.exports = {
   },
   getApiSecret() {
     return API_SECRET
+  },
+  loggedInRoute() {
+    return expressJwt({ secret: API_SECRET});
   }
 }
