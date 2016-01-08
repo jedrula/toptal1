@@ -15,9 +15,11 @@
   "license": "ISC",
   "dependencies": {
     "async": "^1.5.1",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
     "express": "^4.13.3",
     "express-jwt": "^3.3.0",
+    "jsonapify": "^1.6.7",
     "jsonwebtoken": "^5.5.4",
     "mongoose": "^4.3.4"
   },
