@@ -34,7 +34,7 @@ module.exports = function (app) {
         });
       }
     ], (err, user) => {
-      console.log('final data', user);
+
       if(err) {
         console.warn('authentication error', err);
         res.status(401).json({
@@ -44,10 +44,12 @@ module.exports = function (app) {
       else {
         //TODO send roles like admin or userAdmin
         var token = tokenUtils.sign(user);
-        res.status(200).json({
+        var json = {
           token: token,
           user_id: user._id
-        });
+        };
+        console.log('sending json back', json);
+        res.status(200).json(json);
       }
     });
   });

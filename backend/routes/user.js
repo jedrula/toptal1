@@ -6,15 +6,47 @@ var async = require('async');
 var tokenUtils = require('../utils/token');
 var jsonapify = require('jsonapify');
 
+var userResource = new jsonapify.Resource(User, {
+  type: 'users',
+  id: {
+    value: new jsonapify.Property('_id'),
+    writable: false,
+  },
+  //links: {
+  //    self: {
+  //        value: new jsonapify.Template('/users/${FirstName}'),
+  //        writable: false,
+  //    },
+  //},
+  attributes: {
+    identification: new jsonapify.Property('identification'),
+    password: new jsonapify.Property('password'),   //TODO maybe use a hash and add readable: false ? as in Readme example: https://github.com/alex94puchades/jsonapify
+  },
+});
+
+jsonapify.Runtime.addResource('User', userResource);
+
 //TODO make sure that this uses SSL
+
+function debugbody(identifier) {
+  return (req,res,next) => {  //TODO remove
+    console.log('debuging rest: ' + identifier );
+    console.log('req.body',req.body);
+    next();
+  };
+}
+
+function logErrors() {
+  return (err, req, res, next) => {
+    logger.error(err);
+    next(err);
+  };
+}
+
 
 module.exports = function (app) {
   myServerRouter.post('/', [
-    function(req,res,next) {
-      console.log('in here creating user');
-      console.log(req.body);
-      next();
-    },
+    debugbody('posting'),
     jsonapify.create('User'),
     function(err, req, res, next) {
                 console.log('errror in jsonapify', err);
@@ -71,9 +103,17 @@ module.exports = function (app) {
 */
   //TODO manage rights to this resource
   myServerRouter.route('/:id').get([
+
+    //(req,res,next) => {
+    //  console.log(jsonapify.param('id'), jsonapify.param('_id'), 'jsonapify params ');
+    //
+    //  next();
+    //},
+    //debugbody('get id'),
     jsonapify.read([
-      'User', { _id: jsonapify.param('_id') }
+      'User', { _id: jsonapify.param('id') }
     ]),
+    logErrors,
     jsonapify.errorHandler()
   ]);
 

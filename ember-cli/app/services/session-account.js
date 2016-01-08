@@ -11,11 +11,13 @@ export default Ember.Service.extend({
     return new RSVP.Promise((resolve, reject) => {
       const id = this.get('session.data.authenticated.user_id');
       if (!Ember.isEmpty(id)) {
+
         return this.get('store').find('user', id).then((account) => {
           this.set('account', account);
           resolve();
         }, reject);
       } else {
+        console.log('is empty id');
         resolve();
       }
     });

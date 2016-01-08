@@ -15,7 +15,6 @@ export default Ember.Controller.extend({
       //TODO handle error!
       //TODO login and redirect somewhere
       return user.save().then(function() {
-        debugger;
         this.get('session').authenticate('authenticator:jwt', {
           password: password,
           identification: identification

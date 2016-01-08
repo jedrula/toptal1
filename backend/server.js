@@ -3,7 +3,8 @@ console.log('this is backend for toptal assignment');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-app.use(bodyParser.json()); // for parsing application/json maybe we should also leave 'normal' application/json ? 
+app.use(bodyParser.urlencoded({ extended: true }));//TODO not sure if that is needed
+app.use(bodyParser.json()); // for parsing application/json maybe its not needed / harmful
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 

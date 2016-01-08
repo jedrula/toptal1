@@ -39,26 +39,4 @@ userSchema.methods.validPassword = (password, cb) => {
  */
 var userModel = mongoose.model('User',userSchema);
 
-
-
-var userResource = new jsonapify.Resource(userModel, {
-    type: 'users',
-    id: {
-        value: new jsonapify.Property('_id'),
-        writable: false,
-    },
-    //links: {
-    //    self: {
-    //        value: new jsonapify.Template('/users/${FirstName}'),
-    //        writable: false,
-    //    },
-    //},
-    attributes: {
-        identification: new jsonapify.Property('identification'),
-        password: new jsonapify.Property('password'),   //TODO maybe use a hash and add readable: false ? as in Readme example: https://github.com/alex94puchades/jsonapify
-    },
-});
-
-jsonapify.Runtime.addResource('User', userResource);
-
 module.exports = userModel;
