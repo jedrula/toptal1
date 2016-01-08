@@ -4,9 +4,25 @@ var User = require('../models/User');
 var encryption = require('../utils/encryption');
 var async = require('async');
 var tokenUtils = require('../utils/token');
+var jsonapify = require('jsonapify');
 
 //TODO make sure that this uses SSL
+
 module.exports = function (app) {
+  myServerRouter.post('/', [
+    function(req,res,next) {
+      console.log('in here creating user');
+      console.log(req.body);
+      next();
+    },
+    jsonapify.create('User'),
+    function(err, req, res, next) {
+                console.log('errror in jsonapify', err);
+                next(err);
+        },
+    jsonapify.errorHandler('User')
+  ]);
+  /*
   myServerRouter.post('/', (req, res) => {
     var newUser = new User();
     var payload = req.body.user;
@@ -14,17 +30,15 @@ module.exports = function (app) {
 
     var password = payload.meta.password;
     newUser.identification = identification;
-    //TODO async
-    encryption.cryptPassword(password,(err, hash) => {
-      //TODO make sure password is not too weak
-      if(err) {
-        //TODO handle error
-        console.warn('error 401 cryptPassword', err);
-        res.status(500).send(err.toString())
-      }
-      else {
+// encryption.cryptPassword(password,(err, hash) => {
+// if(err) {
+//  console.warn('error 401 cryptPassword', err);
+//   res.status(500).send(err.toString())
+// }
+// else {
 
-        newUser.password = hash;
+//newUser.password = hash;
+
         newUser.save((err, user) => {
           if(err) {
             //TODO handle error
@@ -49,11 +63,22 @@ module.exports = function (app) {
             })
           }
         });
-      }
-    });
-  });
 
+
+//}
+// });
+  });
+*/
   //TODO manage rights to this resource
+  myServerRouter.route('/:id').get([
+    jsonapify.read([
+      'User', { _id: jsonapify.param('_id') }
+    ]),
+    jsonapify.errorHandler()
+  ]);
+
+  //TODO add delete in the same fashion
+  /*
   myServerRouter.get('/:id', tokenUtils.loggedInRoute(), (req, res) => {
     console.log('geting a user');
     User.findById(req.params.id, (err, user) => {
@@ -79,6 +104,7 @@ module.exports = function (app) {
       res.status(status).json(json);
     });
   });
+*/
 
 
   //TODO allow only for admin and userManager

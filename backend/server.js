@@ -3,11 +3,9 @@ console.log('this is backend for toptal assignment');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.json()); // for parsing application/json maybe we should also leave 'normal' application/json ? 
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
-//var jwt = require('express-jwt');
-//var API_SECRET = require('./utils/token').getApiSecret();
-//app.use(jwt({ secret: API_SECRET}).unless({path: ['/api/token-auth/']}));  //TODO DRY
 
 //for modulus the host is: http://toptalbackend-57350.onmodulus.net/
 var ipaddress = "0.0.0.0";  //TODO assign backend if in production - something like process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'

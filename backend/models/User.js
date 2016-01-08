@@ -1,10 +1,35 @@
 var mongoose = require('mongoose');
+var jsonapify = require('jsonapify');   
 var encryption = require('../utils/encryption');
 
 var userSchema = mongoose.Schema({
     identification: {type: String, required: true, unique: true},
     password: {type: String, required: true}    //TODO select false wasnt working for me but maybe there is some way?
 });
+
+//TODO maybe it would be better if we moved that to middleware to decouple? Although its small enough i think its fine here
+userSchema.pre('save', function(next) {
+  var user = this;
+  console.log('about to save user',user);
+  //TODO make sure password is not too weak
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) {
+    next();
+  } 
+  else{
+    encryption.cryptPassword(user.password,(err, hash) => {
+      if (err) {
+        next(err);
+      }
+      else {
+        // override the cleartext password with the hashed one
+        user.password = hash;
+        next();
+      }
+    }); 
+  }
+});
+
 /* TODO not working for some reason - this.password is undefined
 userSchema.methods.validPassword = (password, cb) => {
     console.log('compare in userSchema',password,this.password, this);
