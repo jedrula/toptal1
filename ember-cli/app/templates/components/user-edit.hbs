@@ -1,0 +1,22 @@
+<label>Preferred working hours per day:</label>
+<div class="form-group">
+    <div class="input-group">
+    {{#power-select selected=hours options=shared.availableHourOptions onchange=(action (mut hours)) as |option|}}
+        {{option}} hours
+    {{/power-select}}
+    </div>
+</div>
+<div class="form-group">
+    <button {{action "edit"}} type="submit" class="btn btn-primary">Save</button>
+</div>
+
+{{#if errors}}
+    <div class="alert alert-danger">
+        <p>
+            <strong>Saving user failed:</strong>
+            {{#each errors as |error|}}
+                <code>{{error.message}}</code>
+            {{/each}}
+        </p>
+    </div>
+{{/if}}

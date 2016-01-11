@@ -2,13 +2,17 @@ var mongoose = require('mongoose');
 var jsonapify = require('jsonapify');   
 var encryption = require('../utils/encryption');
 
-var userSchema = mongoose.Schema({
+//var Entry = require('./entry');
+
+var schema = mongoose.Schema({
     identification: {type: String, required: true, unique: true},
-    password: {type: String, required: true}    //TODO select false wasnt working for me but maybe there is some way?
+    password: {type: String, required: true},    //TODO select false wasnt working for me but maybe there is some way?
+    hours: {type: Number, required: true, default: 8},
+    //entries: [{ type: mongoose.Schema.ObjectId, ref: 'Entry'}]
 });
 
 //TODO maybe it would be better if we moved that to middleware to decouple? Although its small enough i think its fine here
-userSchema.pre('save', function(next) {
+schema.pre('save', function(next, done) {
   var user = this;
   console.log('about to save user',user);
   //TODO make sure password is not too weak
@@ -30,6 +34,14 @@ userSchema.pre('save', function(next) {
   }
 });
 
+//schema.post('find', function(result) {
+//  console.log(this instanceof mongoose.Query); // true
+//  // prints returned documents
+//  console.log('find() returned ' + JSON.stringify(result));
+//});
+
+
+
 /* TODO not working for some reason - this.password is undefined
 userSchema.methods.validPassword = (password, cb) => {
     console.log('compare in userSchema',password,this.password, this);
@@ -37,6 +49,6 @@ userSchema.methods.validPassword = (password, cb) => {
     encryption.validPassword (password,this.password, cb);
 };
  */
-var userModel = mongoose.model('User',userSchema);
+var userModel = mongoose.model('User',schema);
 
 module.exports = userModel;

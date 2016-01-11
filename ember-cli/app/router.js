@@ -10,11 +10,17 @@ Router.map(function() {
     path: 'user/:user_id'
   }, function() {
     this.route('entries', {
-      path: 'entries'
+      path: '/entries'
     });
+    this.route('edit');
   });
   this.route('register');
   this.route('login');
+  this.route('entry', {
+    path: 'entry/:entry_id'
+  }, function() {
+    this.route('edit');
+  });
 });
 
 export default Router;

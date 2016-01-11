@@ -1,0 +1,38 @@
+{{#if session.isAuthenticated}}
+    {{#if (can-crud sessionAccount.account owner)}}
+        <form class="form-inline" {{action 'add' on='submit'}}>
+            <div class="form-group">
+                {{pick-a-date useUTC=true date=(readonly date) on-selected=(action (mut date)) placeholder="Pick a date" options=(readonly extraPickadateOptions)}}
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    {{#power-select selected=hours options=shared.availableHourOptions onchange=(action (mut hours)) as |option|}}
+                        {{option}} hours
+                    {{/power-select}}
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+        {{#if errors}}
+            <div class="alert alert-danger">
+                <p>
+                    <strong>Saving entry failed:</strong>
+                    {{#each errors as |error|}}
+                        {{#if error.message}}
+                            <code>{{error.message}}</code>
+                        {{/if}}
+                        {{#if error.detail}}
+                            <small>{{error.detail}}</small>
+                        {{/if}}
+                    {{/each}}
+                </p>
+            </div>
+        {{/if}}
+    {{else}}
+        You do not have rights to perform this action
+    {{/if}}
+{{else}}
+    you need to be authenticated to add entries
+{{/if}}

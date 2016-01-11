@@ -1,6 +1,6 @@
 var express = require('express');
 var myServerRouter = express.Router();
-var User = require('../models/User');
+var User = require('../models/user');
 var encryption = require('../utils/encryption');
 var async = require('async');
 var tokenUtils = require('../utils/token');

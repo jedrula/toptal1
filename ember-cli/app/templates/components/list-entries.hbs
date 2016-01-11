@@ -1,0 +1,23 @@
+<label>From: </label>
+{{pick-a-date useUTC=true date=minDate on-selected=(action (mut minDate)) placeholder="From" options=(readonly extraPickadateOptions)}}
+<label>To: </label>
+{{pick-a-date useUTC=true date=maxDate on-selected=(action (mut maxDate)) placeholder="To" options=(readonly extraPickadateOptions)}}
+<ul class="list-group">
+    {{#each sortedEntries as |entry|}}
+    <li class="list-group-item {{entry-color user entry}}">
+
+        {{#link-to "entry.index" entry}}
+            {{format-date entry.date}}
+        {{/link-to}}
+        |
+        <span class="hours">{{entry.hours}} hours </span>
+        {{#if session.isAuthenticated}}
+            {{#if (can-crud sessionAccount.account user.id)}}
+             {{#link-to "entry.edit" entry class="btn btn-primary"}}Edit{{/link-to}}
+             <button {{action "remove" entry}} type="button" class="btn btn-danger">Remove</button>
+            {{/if}}
+        {{/if}}
+    </li>
+    {{/each}}
+
+</ul>

@@ -18,13 +18,17 @@ var uristring = isDeployedToProduction ? 'mongodb://admin:toptal@apollo.modulusm
 database.connect(uristring);
 
 var userRoute = require('./routes/user');
+var entriesRoute = require('./routes/entry');
+var userEntriesRoute = require('./routes/userentry');
 var tokenAuthRoute = require('./routes/token-auth');
 var tokenRefreshRoute = require('./routes/token-refresh');
-var routes = [userRoute, tokenAuthRoute, tokenRefreshRoute];   //TODO iterate through all files in routes automatically and add them to the array
+
+var routes = [userRoute, entriesRoute, userEntriesRoute, tokenAuthRoute, tokenRefreshRoute];   //TODO iterate through all files in routes automatically and add them to the array
 
 //cors
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); //TODO maybe we should be more restrictive
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
   res.header("Access-Control-Allow-Headers", "Origin, Authorization, X-Requested-With, Content-Type, Accept");
   next();
 });
@@ -49,3 +53,14 @@ var server = app.listen(port,ipaddress,() => {
     });
     console.log('Backend listening at http://%s:%s',host,port);
 });
+
+
+var jsonpatch = require('jsonpatch');
+
+mydoc = {
+  "baz": "qux",
+  "foo": "bar"
+};
+thepatch = [{ "op": "replace", "path": "/baz", "value": "boo" }];
+patcheddoc = jsonpatch.apply_patch(mydoc, thepatch);
+console.log('patcheddoc',patcheddoc);

@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
   session: Ember.inject.service(),
   actions: {
     saveModel(data) {
+      var self = this;
       console.log('data in controller saveModel',data);
       var identification = data.identification;
       var password = data.password;
@@ -17,7 +18,12 @@ export default Ember.Controller.extend({
       return user.save().then(function() {
         this.get('session').authenticate('authenticator:jwt', {
           password: password,
-          identification: identification
+          identification: identification,
+          hours: data.hours
+        }).then(() => {
+          Ember.run(() => {
+            self.transitionToRoute('user.entries',user);
+          });
         });
       }.bind(this));
     }

@@ -1,47 +1,22 @@
 var express = require('express');
 var myServerRouter = express.Router();
-var User = require('../models/User');
+var User = require('../models/user');
 var encryption = require('../utils/encryption');
 var async = require('async');
 var tokenUtils = require('../utils/token');
 var jsonapify = require('jsonapify');
+require('../resources/user');
+require('../resources/entry');
+//TODO remove debug logger
+var logger = require('../utils/logger');
+var debugbody = logger.debugbody;
+var logErrors = logger.logErrors;
 
-var userResource = new jsonapify.Resource(User, {
-  type: 'users',
-  id: {
-    value: new jsonapify.Property('_id'),
-    writable: false,
-  },
-  //links: {
-  //    self: {
-  //        value: new jsonapify.Template('/users/${FirstName}'),
-  //        writable: false,
-  //    },
-  //},
-  attributes: {
-    identification: new jsonapify.Property('identification'),
-    password: new jsonapify.Property('password'),   //TODO maybe use a hash and add readable: false ? as in Readme example: https://github.com/alex94puchades/jsonapify
-  },
-});
 
-jsonapify.Runtime.addResource('User', userResource);
 
 //TODO make sure that this uses SSL
 
-function debugbody(identifier) {
-  return (req,res,next) => {  //TODO remove
-    console.log('debuging rest: ' + identifier );
-    console.log('req.body',req.body);
-    next();
-  };
-}
 
-function logErrors() {
-  return (err, req, res, next) => {
-    logger.error(err);
-    next(err);
-  };
-}
 
 
 module.exports = function (app) {
@@ -101,6 +76,9 @@ module.exports = function (app) {
 // });
   });
 */
+
+
+
   //TODO manage rights to this resource
   myServerRouter.route('/:id').get([
 
@@ -148,7 +126,7 @@ module.exports = function (app) {
 
 
   //TODO allow only for admin and userManager
-  myServerRouter.delete('/:id', tokenUtils.loggedInRoute(), (req, res) => {
+  myServerRouter.route('/:id').delete(tokenUtils.loggedInRoute(), (req, res) => {
     console.log('deleting a user');
     User.findByIdAndRemove(req.params.id, (err, data) => {
       var status = 200; //asssume it will be OK
@@ -164,7 +142,32 @@ module.exports = function (app) {
       }
       res.status(status).json(json);
     });
-  });
+  }).patch([
+    (req,res) => {
+      var attributes = {};
+      var id = req.params.id;
+      try {
+        attributes = req.body.data.attributes;
+        User.update({ _id: id }, { $set: attributes}, (err,updateResult) =>{
+          //updateResult.nModified === 0 <- is also true when there were no changes
+          if(updateResult.n === 0) {
+            res.status(404).end();
+          }
+          else {
+            res.status(204).end();
+          }
+        });
+      }
+      catch(e) {
+        res.status(400).end();
+      }
+      //req.body.data.attributes
+      //TODO check why jsonapify.modify does not work - seems like sth wrong with jsonpatch
+     // debugger;
+
+      //TODO update and send 204 with no content when updated
+    }
+  ]);
 
 
   app.use('/api/users', myServerRouter);

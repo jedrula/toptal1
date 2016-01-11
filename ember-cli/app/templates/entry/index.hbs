@@ -1,0 +1,10 @@
+<h1>Entry</h1>
+<ul class="list-group">
+    <li class="list-group-item">Date: {{format-date model.date}}</li>
+    <li class="list-group-item">Total time: {{model.hours}}</li>
+    <li class="list-group-item">
+        Notes: TODO
+    </li>
+</ul>
+
+{{#link-to "entry.edit" model class="btn btn-primary"}}Edit{{/link-to}}

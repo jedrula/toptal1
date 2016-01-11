@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   errorMessage: null,
   actions: {
     register() {
-      var properties = this.getProperties(['identification','password']);
+      var properties = this.getProperties(['identification','password','hours']);
       //console.log('register action ',properties);
       this.attrs.onSave(properties).catch((reason) => {
       	this.set('errors', reason.errors);

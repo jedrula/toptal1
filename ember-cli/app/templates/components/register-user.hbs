@@ -2,12 +2,13 @@
 <form class="form-inline" {{action 'register' on='submit'}}>
   {{input value=identification placeholder="email" class="form-control"}}
   {{input value=password type="password" placeholder="Password" class="form-control"}}
+  {{input value=hours placeholder="hours" class="form-control"}}
   <button type="submit" class="btn btn-primary">Signup</button>
 </form>
 {{#if errors}}
   <div class="alert alert-danger">
     <p>
-      <strong>Registration failed:</strong> 
+      <strong>Registration failed:</strong>
    	  {{#each errors as |error|}}
    	  	<code>{{error.message}}</code>
 	  {{/each}}

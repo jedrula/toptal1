@@ -1,5 +1,7 @@
-<ul class="list-group">
+<h4>Preferred working hours per day: {{user.hours}} hours {{#link-to "user.edit" user class="btn btn-primary"}}Change{{/link-to}}</h4>
+{{list-entries user=user}}
+<h3>New entry</h3>
 
-    <li class="list-group-item">my entry</li>
-</ul>
-{{outlet}}
+{{new-entry owner=(readonly user.id) hours=(readonly user.hours) onSave=(action "addUserEntry")}}
+
+<! -- {{outlet}} -->
