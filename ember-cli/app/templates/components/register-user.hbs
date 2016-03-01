@@ -1,4 +1,9 @@
 <h2>Signup</h2>
+{{#time-options options=[1,2] onchange=(action (mut hours)) as |option|}}
+    {{option}}asd
+{{/time-options}}
+
+
 <form class="form-inline" {{action 'register' on='submit'}}>
   {{input value=identification placeholder="email" class="form-control"}}
   {{input value=password type="password" placeholder="Password" class="form-control"}}

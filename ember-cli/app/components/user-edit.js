@@ -3,6 +3,8 @@ const { inject: { service } } = Ember;
 
 export default Ember.Component.extend({
   shared: service(),
+  session: service('session'),
+  sessionAccount: service('session-account'),
   hours: null,
   didInitAttrs(obj) {
     var attrs = obj.attrs;
